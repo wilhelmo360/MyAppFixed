@@ -1,52 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  ListItem as BaseListItem,
+  Button,
+  Left,
+  Thumbnail,
+  Body,
+  Right,
+  H2,
+  Text,
+} from 'native-base';
+import mediaAPI from '../hooks/ApiHooks';
 
 const ListItem = (props) => {
+  const {navigation, singleMedia} = props;
+  const {getThumbnail} = mediaAPI();
+  const tn = getThumbnail(singleMedia.file_id);
+  console.log('thumbnails', tn);
   return (
-    <TouchableOpacity style={styles.row}>
-      <View style={styles.imagebox}>
-        <Image
-          style={styles.image}
-          source={{uri: props.singleMedia.thumbnails.w160}}
-        />
-      </View>
-      <View style={styles.textbox}>
-        <Text style={styles.listTitle}> {props.singleMedia.title} </Text>
-        <Text> {props.singleMedia.description} </Text>
-      </View>
-    </TouchableOpacity>
+    <BaseListItem thumbnail>
+      <Left>
+        {tn && <Thumbnail square large source={{uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160}} />
+        }
+      </Left>
+      <Body>
+        <H2>{singleMedia.title}</H2>
+        <Text numberOfLines={2}>{singleMedia.description}</Text>
+      </Body>
+      <Right>
+        <Button
+          onPress={
+            () => {
+              console.log('klik');
+              navigation.push('Single', {file: singleMedia});
+            }
+          }
+        >
+          <Text>View</Text>
+        </Button>
+      </Right>
+    </BaseListItem>
   );
 };
 
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    padding: 15,
-    marginBottom: 5,
-    backgroundColor: '#eee',
-    borderRadius: 16,
-  },
-  imagebox: {
-    flex: 1,
-  },
-  image: {
-    flex: 1,
-    borderRadius: 16,
-  },
-  textbox: {
-    flex: 2,
-    padding: 10,
-  },
-  listTitle: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    paddingBottom: 15,
-  },
-});
-
 ListItem.propTypes = {
   singleMedia: PropTypes.object,
+  navigation: PropTypes.object,
 };
 
 export default ListItem;
