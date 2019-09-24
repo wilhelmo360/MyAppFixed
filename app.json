@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "MyAppFixed",
-    "slug": "MyAppFixed",
+    "name": "MyApp2",
+    "slug": "MyApp2",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
       "android",
